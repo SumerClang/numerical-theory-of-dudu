@@ -1,0 +1,31 @@
+clear;
+clc;
+%对x，y，t进行离散化处理
+dx=0.025;
+lx=1;
+x=0:dx:lx;
+dy=0.025;
+ly=1;
+y=0:dy:ly;
+dt=0.0001;
+%时间为从0到1s
+t=0:dt:1;
+%生成AX,AY矩阵
+Ax=-2*eye(length(x))+diag(ones(1,length(x)-1),1)+diag(ones(1,length(x)-1),-1);
+Ay=-2*eye(length(y))+diag(ones(1,length(y)-1),1)+diag(ones(1,length(y)-1),-1);
+[X,Y]=meshgrid(x,y);
+%初始化U0
+%U0=exp(-10*((X-0.5).^2+(Y-0.5).^2));
+U0=300*ones(41,41);
+U=U0;
+a=1;
+for n=1:length(t)-1
+    U=U+a*a*(1/dy^2*Ay*U+1/dx^2*U*Ax)*dt;
+    U(1,:)=0;
+    U(:,length(x))=0;
+    U(length(y),:)=0;
+    U(:,1)=0;
+    surf(X,Y,U);
+    axis([x(1) x(end) y(1) y(end) 0 500]);
+    getframe;
+end
