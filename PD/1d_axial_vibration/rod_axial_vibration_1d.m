@@ -165,12 +165,16 @@ for it=1:nt
     ax=force_pd/rou;
     velocity=velocity+ax*dt;
     displacement=displacement+velocity*dt;
+    %记录中心点的位移
     d_draw(it,1)=displacement(503,1);
+    %可以用来绘制杆件整体位移随时间变化
+    %plot(coordinate_m(4:nx,1),displacement(4:nx,1));
+    %getframe;
 end
 
 %% 画图
-%给定时间
-t_draw=linspace(1,26000,26000)*dt;
+%给定时间序列
+t_draw=linspace(1,nt,nt)*dt;
 %画图
 plot(t_draw*1000,d_draw,'LineWidth',1.2);
 xlabel("t/\mus");ylabel("u/m");grid on;title("中心点位移随时间变化");
