@@ -10,12 +10,12 @@ rou=7850;
 dx=0.001;
 delta=3.015*dx;
 dV=dx*A;
-%考虑到左侧有位移约束，引入虚拟边界层，厚度为delta，故总物质点数量+3
-nx=L/dx+3;
+%考虑到左侧有位移约束，引入虚拟边界层，厚度为delta，右侧力作用处引入虚拟边界层，厚度dx，故总物质点数量+4
+nx=L/dx+4;
 %生成物质点坐标
 coordinate_m=zeros(nx,1);
 for i=1:nx
-   coordinate_m(nx-(i-1),1)=L-0.5*dx-dx*(i-1);
+   coordinate_m(nx-i+1,1)=L-0.5*dx-dx*(i-2);
 end
 
 %% 确定每个质点近场域内的其他质点
@@ -29,10 +29,10 @@ for i=1:nx
         no(i,1)=i-1;
     end
     %判断该质点右边有几个点
-    if i<=1000
+    if i<=1001
         no(i,2)=no(i,2)+3;
     else
-        no(i,2)=no(i,2)+(1003-i);
+        no(i,2)=no(i,2)+(1004-i);
     end
 end
 
