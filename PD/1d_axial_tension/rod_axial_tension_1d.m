@@ -100,7 +100,7 @@ dt=1;
 %减小安全因子以加快收敛
 density=zeros(nx,1);
 for i=1:nx
-    density(i,1)=0.25*dt*dt*(2*A*delta)*c_pd/dx*1;
+    density(i,1)=0.25*dt*dt*(2*A*delta)*c_pd/dx*5;
 end
 
 
@@ -118,7 +118,7 @@ force_body(nx,1)=200e9;
 
 %% 开始迭代得到稳态解
 %确定迭代步数
-nt=160000;
+nt=12000;
 %ax存储x方向加速度,force_pd存储每个物质点总pd力
 ax=zeros(nx,1);
 force_pd=zeros(nx,1);
@@ -135,7 +135,7 @@ for it=1:nt
     %每次计算pd力先置0
     force_pd=zeros(nx,1);
     %输出计算进度
-    if rem(it,1000)==0
+    if rem(it,100)==0
         fprintf("%d/%d\n", it, nt); 
         %下述语句用于在计算中监控
         %displacement_ana=200/A/E*coordinate_m(4:1003);
@@ -196,7 +196,7 @@ for it=1:nt
     k=zeros(nx,nx);
     for i=4:nx
         if (velocity_middle_old(i, 1) ~= 0.0)
-            cn1=cn1+displacement(i,1)*(force_pd_old(i,1)/density(i,1)-force_pd(i,1)/density(i,1))/(dt*velocity_middle_old(i,1));
+            cn1=cn1+displacement(i,1)*(force_pd_old(i,1)/density(i,1)-force_pd(i,1)/density(i,1))*displacement(i,1)/(dt*velocity_middle_old(i,1));
         end
         cn2=cn2+displacement(i,1)*displacement(i,1);
     end
